@@ -68,7 +68,7 @@ def gather_vgs_files(root_dir: Path):
             continue
 
         # Ignore any that end with "_p" + optional digits (e.g. _p50, _p85, etc.)
-        if re.search(r'_p\d*$', stem_lower):
+        if re.search(r'_p\d{2}$', stem_lower):
             continue
 
         filtered.append(vgs_path)
