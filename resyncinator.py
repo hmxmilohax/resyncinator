@@ -6,7 +6,9 @@ import wave
 import shutil
 import subprocess
 import argparse
+import stat
 from pathlib import Path
+from sys import platform
 
 
 def apply_offset(input_wav: Path, output_wav: Path, delay_ms: int):
@@ -254,6 +256,14 @@ def build_iso(main_folder: Path, dep_dir: Path):
     iso_name = f"{volume_label}.iso"
     iso_out_path = main_folder / iso_name
 
+    if platform == "windows":
+        dest_arg = str(iso_out_path) # This might be redundant, not sure.
+    else:
+        dest_arg = iso_name
+        os.chmod(imgburn_exe_dest, os.stat(imgburn_exe_dest).st_mode | stat.S_IXUSR) # Add the executable permission to the imgburn exe
+
+    
+
     cmd = [
         str(imgburn_exe_dest),
         "/SETTINGS", "./imgburn.ini",
@@ -267,7 +277,7 @@ def build_iso(main_folder: Path, dep_dir: Path):
         "/ROOTFOLDER", "TRUE",
         "/NOIMAGEDETAILS",
         "/SRC", src_flag,
-        "/DEST", str(iso_out_path),
+        "/DEST", dest_arg,
         "/START",
         "/CLOSE",
         "/LOG", "DELETEME"
@@ -364,7 +374,7 @@ def main():
 
     script_dir = Path(__file__).parent.resolve()
     dep_dir = script_dir / "z_dependencies"
-    rockaudio = dep_dir / "rockaudio.exe"
+    rockaudio = dep_dir / "RockAudio.exe"
     arkhelper = dep_dir / "arkhelper.exe"
     seven_z = dep_dir / "7z.exe"  # for ISO extraction
 
