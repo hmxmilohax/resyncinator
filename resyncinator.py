@@ -25,13 +25,16 @@ def apply_offset(input_wav: Path, output_wav: Path, delay_ms: int):
         offset_frames = int(framerate * abs(delay_ms) / 1000.0)
 
         if delay_ms < 0:
-            # Negative => trim the start
+            # Negative => trim the start, then pad the end with silence to maintain original length
             if offset_frames >= total_frames:
                 raise ValueError(
                     f"Cannot trim {delay_ms} ms; file is too short."
                 )
             infile.setpos(offset_frames)
-            audio_data = infile.readframes(total_frames - offset_frames)
+            trimmed_audio = infile.readframes(total_frames - offset_frames)
+            # Calculate silence for padding: same number of frames as trimmed off
+            silence = b"\x00" * (offset_frames * channels * sampwidth)
+            audio_data = trimmed_audio + silence
         elif delay_ms > 0:
             # Positive => prepend silence
             silence = b"\x00" * offset_frames * channels * sampwidth
