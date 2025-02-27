@@ -3,8 +3,13 @@
 ## Simple tool to add or subtract audio delay in gh1/gh2/gh80s isos
 
 # Requirements
-* Windows (I'm sorry)
+## Windows
 * Python
+* 7-Zip
+## Linux
+* Python
+* Wine
+* 7-Zip installed in default wineprefix
 
 # Usage
 * Drag in a gh1/gh2/gh80s/custom iso into the "main" folder
