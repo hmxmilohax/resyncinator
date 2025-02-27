@@ -5,6 +5,7 @@
 # Requirements
 ## Windows
 * Python
+* 7-Zip
 ## Linux
 * Python
 * Wine
