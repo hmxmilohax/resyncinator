@@ -5,3 +5,5 @@ main/SLUS*
 main/SYSTEM.CNF
 DVD_Sectors.Bin
 /main/_processed_original_isos
+.DS_Store
+z_dependencies/Log Files/imgburn.log
